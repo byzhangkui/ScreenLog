@@ -1,4 +1,6 @@
 import sys
+import argparse
+
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QSystemTrayIcon
 from PyQt6.QtCore import Qt, QRect, QTimer, pyqtSignal, QPoint
 from PyQt6.QtGui import QColor, QPainter, QPen, QBrush, QCursor
@@ -73,12 +75,13 @@ class SelectionOverlay(QWidget):
             self.close()
 
 class ControlWindow(QWidget):
-    def __init__(self):
+    def __init__(self, save_dir="captures", interval_ms=500):
         super().__init__()
-        self.setWindowTitle("Auto Capture")
+        self.setWindowTitle(f"Auto Capture - {save_dir} ({interval_ms}ms)")
         self.resize(300, 200)
         
-        self.engine = capture.CaptureEngine()
+        self.engine = capture.CaptureEngine(save_dir=save_dir, interval_ms=interval_ms)
+
         
         layout = QVBoxLayout()
         
@@ -140,7 +143,14 @@ class ControlWindow(QWidget):
         event.accept()
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="ScreenLog - Auto Screen Capture Tool")
+    parser.add_argument("--save-dir", type=str, default="captures", help="Directory to save screenshots")
+    parser.add_argument("--interval", type=int, default=500, help="Capture interval in milliseconds")
+    
+    args = parser.parse_args()
+
     app = QApplication(sys.argv)
-    window = ControlWindow()
+    window = ControlWindow(save_dir=args.save_dir, interval_ms=args.interval)
     window.show()
     sys.exit(app.exec())
+

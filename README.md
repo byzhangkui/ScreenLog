@@ -26,9 +26,18 @@ pip install -r requirements.txt
 1. Run the application:
 
 ```bash
-python main.py
+python main.py [options]
 ```
 (Or `python3 main.py` depending on your environment)
+
+### Configuration (Optional)
+You can configure the save directory and capture interval via command-line arguments:
+
+```bash
+python main.py --save-dir "my_captures" --interval 1000
+```
+- `--save-dir`: Directory to save screenshots (default: `captures`)
+- `--interval`: Capture interval in milliseconds (default: `500`)
 
 2. **Select Area**: Click the "Select Area" button. The screen will dim. Click and drag to draw a red rectangle around the area you want to capture. Press `Esc` to cancel.
 3. **Start Capture**: Click "Start Capture". The status will change to "Capturing...", and screenshots will be saved to the `captures/` directory.
